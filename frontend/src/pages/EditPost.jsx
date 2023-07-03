@@ -1,5 +1,16 @@
+import styles from "../styles/EditPost.module.css"
+import PostForm from "../components/PostForm"
+import { useParams } from "react-router-dom"
+
 function EditPost() {
-  return <div>EditPost</div>
+  const { id } = useParams()
+
+  return (
+    <div className={styles["container"]}>
+      <h1>modifier le post N° {id}</h1>
+      <PostForm />
+    </div>
+  )
 }
 
 export default EditPost

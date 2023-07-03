@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 import styles from "../styles/PostForm.module.css"
@@ -10,6 +10,17 @@ function PostForm({ modCreate }) {
   const { id } = useParams()
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!modCreate) {
+      fetch(`http://localhost:8000/post/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setTitle(data.title)
+          setContent(data.content)
+        })
+    }
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -29,7 +40,7 @@ function PostForm({ modCreate }) {
         }
 
         if (res.status === 200) {
-          return navigate(`/post/${id}`)
+          return navigate(`/show-post/${id}`)
         }
 
         alert("Bad request")
