@@ -1,0 +1,10 @@
+.post-card {
+  margin-top: 1rem;
+  min-width: 30%;
+}
+
+.post-card p {
+  font-size: small;
+  font-style: italic;
+  color: gray;
+}

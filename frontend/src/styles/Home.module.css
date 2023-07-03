@@ -1,0 +1,11 @@
+.home-container h1 {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.article-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

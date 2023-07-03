@@ -1,0 +1,7 @@
+.footer {
+  padding: 1rem;
+  font-size: small;
+  display: flex;
+  justify-content: center;
+  background-color: cornflowerblue;
+}
