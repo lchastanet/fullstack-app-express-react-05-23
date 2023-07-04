@@ -1,0 +1,19 @@
+.container h1 {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.container span {
+  font-size: 400;
+  font-style: italic;
+  color: gray;
+}
+
+.post-content {
+  width: 40%;
+  margin: 2rem auto;
+}
+
+.post-content p {
+  margin-top: 1rem;
+}

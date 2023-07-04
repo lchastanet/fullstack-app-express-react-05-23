@@ -14,3 +14,15 @@ export const createOne = ({ title, content }) => {
     content,
   ])
 }
+
+export const editOne = ({ id, title, content }) => {
+  return db.query("update posts set title = ?, content = ? where id = ?", [
+    title,
+    content,
+    id,
+  ])
+}
+
+export const deleteOne = (id) => {
+  return db.query("delete from posts where id = ?", [id])
+}
