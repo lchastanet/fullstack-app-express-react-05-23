@@ -10,6 +10,9 @@ function Header() {
           <li>
             <NavLink to="/">Home</NavLink>
           </li>
+          <li>
+            <NavLink to="/create-post">Create</NavLink>
+          </li>
         </ul>
       </nav>
     </header>

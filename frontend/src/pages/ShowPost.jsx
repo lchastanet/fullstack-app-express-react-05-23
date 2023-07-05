@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 import styles from "../styles/ShowPost.module.css"
 
@@ -8,11 +8,29 @@ function ShowPost() {
 
   const { id } = useParams()
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     fetch(`http://localhost:8080/post/${id}`)
       .then((res) => res.json())
       .then((data) => setPost(data))
   }, [id])
+
+  const handleDelete = () => {
+    const confirmation = window.confirm("Are you sure ?")
+
+    if (confirmation) {
+      fetch(`http://localhost:8080/post/${id}`, {
+        method: "DELETE",
+      }).then((res) => {
+        if (res.status === 204) {
+          return navigate("/")
+        }
+
+        alert("Bad Request")
+      })
+    }
+  }
 
   return (
     <>
@@ -25,6 +43,17 @@ function ShowPost() {
               {new Date(post.creation_date).toLocaleTimeString()}
             </span>
             <p>{post.content}</p>
+            <div className={styles["show-post-buttons"]}>
+              <Link className={styles.button} to={`/edit-post/${id}`}>
+                Modifier
+              </Link>
+              <button
+                onClick={handleDelete}
+                className={`${styles.button} ${styles.danger}`}
+              >
+                Supprimer
+              </button>
+            </div>
           </div>
         </div>
       )}
