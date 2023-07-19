@@ -2,25 +2,30 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import styles from "../styles/ShowPost.module.css"
+import CommentCard from "../components/CommentCard"
 
 function ShowPost() {
   const [post, setPost] = useState(null)
+  const [comments, setComments] = useState(null)
 
   const { id } = useParams()
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(`http://localhost:8080/post/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}/comment`)
       .then((res) => res.json())
-      .then((data) => setPost(data))
+      .then(([postData, commentsData]) => {
+        setPost(postData)
+        setComments(commentsData)
+      })
   }, [id])
 
   const handleDelete = () => {
     const confirmation = window.confirm("Are you sure ?")
 
     if (confirmation) {
-      fetch(`http://localhost:8080/post/${id}`, {
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/${id}`, {
         method: "DELETE",
       }).then((res) => {
         if (res.status === 204) {
@@ -54,6 +59,16 @@ function ShowPost() {
                 Supprimer
               </button>
             </div>
+          </div>
+          <div className={styles["post-content"]}>
+            <h2>Ajouter un commentaire :</h2>
+          </div>
+          <div className={styles["post-content"]}>
+            <h2>Commentaires :</h2>
+            {comments &&
+              comments.map((comment) => (
+                <CommentCard key={comment.id} comment={comment} />
+              ))}
           </div>
         </div>
       )}

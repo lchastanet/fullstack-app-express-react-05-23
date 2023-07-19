@@ -4,6 +4,7 @@ import {
   createOne,
   editOne,
   deleteOne,
+  getComments,
 } from "../models/post.model.js"
 
 export const browse = async (req, res) => {
@@ -25,6 +26,24 @@ export const findOne = async (req, res) => {
 
     if (result.length) {
       res.json(result[0])
+    } else {
+      res.sendStatus(404)
+    }
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ msg: "Erreur" })
+  }
+}
+
+export const findOneWithComments = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const [post] = await getOne(id)
+    const [comments] = await getComments(id)
+
+    if (post.length) {
+      res.json([post[0], comments])
     } else {
       res.sendStatus(404)
     }

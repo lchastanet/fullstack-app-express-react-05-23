@@ -6,11 +6,13 @@ import {
   addOne,
   modifyOne,
   removeOne,
+  findOneWithComments,
 } from "../controllers/post.controller.js"
 
 const router = express.Router()
 
 router.get("/", browse)
+router.get("/:id/comment", findOneWithComments)
 router.get("/:id", findOne)
 router.post("/", addOne)
 router.put("/:id", modifyOne)

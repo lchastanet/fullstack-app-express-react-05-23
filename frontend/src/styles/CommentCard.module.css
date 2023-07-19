@@ -1,0 +1,12 @@
+.container {
+  padding: 0.5rem;
+  border: 1px solid rgb(188, 188, 188);
+  border-radius: 15px;
+  margin: 0.5rem;
+}
+
+.container p {
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 0.1rem 1rem;
+}

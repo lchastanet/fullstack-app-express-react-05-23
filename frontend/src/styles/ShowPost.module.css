@@ -12,6 +12,13 @@
 .post-content {
   width: 40%;
   margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-content h2 {
+  font-size: 1.2em;
+  color: rgb(66, 66, 66);
 }
 
 .post-content p {
