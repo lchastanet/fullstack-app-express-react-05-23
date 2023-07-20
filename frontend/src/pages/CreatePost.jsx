@@ -1,13 +1,14 @@
-import PostForm from "../components/PostForm"
-import styles from "../styles/CreatePost.module.css"
+import PostForm from "../components/PostForm";
 
 function CreatePost() {
   return (
-    <div className={styles.container}>
-      <h1>Ajouter un post</h1>
+    <>
+      <div className="bg-slate-800 p-16 mt-4">
+        <h1 className="text-3xl text-center text-white">Ajouter un post</h1>
+      </div>
       <PostForm modCreate />
-    </div>
-  )
+    </>
+  );
 }
 
-export default CreatePost
+export default CreatePost;
