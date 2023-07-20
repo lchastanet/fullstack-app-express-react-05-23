@@ -5,22 +5,27 @@ import styles from "../styles/ShowPost.module.css"
 
 function ShowPost() {
   const [post, setPost] = useState(null)
+  const [comments, setComments] = useState(null)
 
   const { id } = useParams()
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(`http://localhost:8080/post/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}/comment`)
       .then((res) => res.json())
-      .then((data) => setPost(data))
+      .then(([postData, commentsData]) => {
+        console.log(commentsData)
+        setPost(postData)
+        setComments(commentsData)
+      })
   }, [id])
 
   const handleDelete = () => {
     const confirmation = window.confirm("Are you sure ?")
 
     if (confirmation) {
-      fetch(`http://localhost:8080/post/${id}`, {
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}`, {
         method: "DELETE",
       }).then((res) => {
         if (res.status === 204) {
@@ -43,6 +48,9 @@ function ShowPost() {
               {new Date(post.creation_date).toLocaleTimeString()}
             </span>
             <p>{post.content}</p>
+            <p>
+              By : <span>{post.firstname}</span>
+            </p>
             <div className={styles["show-post-buttons"]}>
               <Link className={styles.button} to={`/edit-post/${id}`}>
                 Modifier
@@ -55,6 +63,14 @@ function ShowPost() {
               </button>
             </div>
           </div>
+          {comments.map((comment) => (
+            <article key={comment.id}>
+              <p>{comment.content}</p>
+              <p>
+                By: <span>{comment.firstname}</span>
+              </p>
+            </article>
+          ))}
         </div>
       )}
     </>

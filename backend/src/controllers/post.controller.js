@@ -1,3 +1,4 @@
+import { getAllByPost } from "../models/comment.model.js"
 import {
   getAll,
   getOne,
@@ -11,6 +12,26 @@ export const browse = async (req, res) => {
     const [result] = await getAll()
 
     res.json(result)
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ msg: "Erreur" })
+  }
+}
+
+export const findOneWithComments = async (req, res) => {
+  console.log(req.query)
+
+  try {
+    const { id } = req.params
+
+    const [[post]] = await getOne(id)
+    const [comments] = await getAllByPost(id)
+
+    if (post) {
+      res.json([post, comments])
+    } else {
+      res.sendStatus(404)
+    }
   } catch (e) {
     console.error(e)
     res.status(500).json({ msg: "Erreur" })

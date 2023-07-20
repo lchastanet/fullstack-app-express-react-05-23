@@ -19,3 +19,10 @@ export const editOne = ({ id, content }) => {
 export const deleteOne = (id) => {
   return db.query("delete from comment where id = ?", [id])
 }
+
+export const getAllByPost = (id) => {
+  return db.query(
+    "select c.id, c.content, u.firstname from comment as c join user as u on c.user_id = u.id where post_id = ?",
+    [id]
+  )
+}

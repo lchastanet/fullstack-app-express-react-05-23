@@ -13,7 +13,7 @@ function PostForm({ modCreate }) {
 
   useEffect(() => {
     if (!modCreate) {
-      fetch(`http://localhost:8080/post/${id}`)
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setTitle(data.title)
@@ -28,11 +28,14 @@ function PostForm({ modCreate }) {
     if (title.length > 3 && content.length > 10) {
       const data = { title, content }
 
-      fetch(`http://localhost:8080/post${modCreate ? "" : "/" + id}`, {
-        method: modCreate ? "POST" : "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }).then((res) => {
+      fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/post${modCreate ? "" : "/" + id}`,
+        {
+          method: modCreate ? "POST" : "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      ).then((res) => {
         if (res.status === 201) {
           return navigate("/")
         }
