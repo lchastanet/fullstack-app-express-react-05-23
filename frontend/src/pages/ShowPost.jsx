@@ -15,7 +15,6 @@ function ShowPost() {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}/comment`)
       .then((res) => res.json())
       .then(([postData, commentsData]) => {
-        console.log(commentsData)
         setPost(postData)
         setComments(commentsData)
       })
