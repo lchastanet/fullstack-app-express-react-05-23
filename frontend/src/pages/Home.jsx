@@ -14,11 +14,13 @@ function Home() {
 
   return (
     <>
-      <div className="flex flex-row justify-center gap-8 bg-white my-12">
+      <div className="flex flex-row justify-center gap-8 bg-white my-12 dark:text- white dark:bg-slate-800">
         <div className="flex flex-col my-auto gap-4">
           <h2 className="text-2xl">
             Bienvenue sur &nbsp;
-            <span className="text-3xl font-bold my-auto">PostMeh_</span>
+            <span className="text-3xl font-bold my-auto dark:text-white">
+              PostMeh_
+            </span>
           </h2>
           <p className="text-sm">
             Ici, vous pouvez créer des posts, les modifier, les supprimer et les

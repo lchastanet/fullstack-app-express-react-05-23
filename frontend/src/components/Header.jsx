@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import ToggleThemeButton from "./ToggleThemeButton";
 
 function Header() {
   return (
     <header>
-      <nav className="flex flex-row justify-around shadow bg-white">
+      <nav className="flex flex-row justify-around shadow bg-white dark:bg-slate-800 dark:text-white">
+        <ToggleThemeButton />
         <Link to="/" className="p-4 font-bold text-xl">
           PostMeh_
         </Link>
