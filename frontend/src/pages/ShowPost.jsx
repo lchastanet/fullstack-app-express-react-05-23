@@ -1,38 +1,41 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useCurrentUserContext } from "../contexts/CurrentUserContext"
 
 function ShowPost() {
-  const [post, setPost] = useState(null);
-  const [comments, setComments] = useState(null);
+  const [post, setPost] = useState(null)
+  const [comments, setComments] = useState(null)
 
-  const { id } = useParams();
+  const { id } = useParams()
 
-  const navigate = useNavigate();
+  const { user } = useCurrentUserContext()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}/comment`)
       .then((res) => res.json())
       .then(([postData, commentsData]) => {
-        setPost(postData);
-        setComments(commentsData);
-      });
-  }, [id]);
+        setPost(postData)
+        setComments(commentsData)
+      })
+  }, [id])
 
   const handleDelete = () => {
-    const confirmation = window.confirm("Are you sure ?");
+    const confirmation = window.confirm("Are you sure ?")
 
     if (confirmation) {
       fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}`, {
         method: "DELETE",
       }).then((res) => {
         if (res.status === 204) {
-          return navigate("/");
+          return navigate("/")
         }
 
-        alert("Bad Request");
-      });
+        alert("Bad Request")
+      })
     }
-  };
+  }
 
   return (
     <>
@@ -50,20 +53,22 @@ function ShowPost() {
             <p className="text-sm text-slate-600 text-end m-4">
               By : <span>{post.firstname}</span>
             </p>
-            <div className="flex flex-row gap-4 justify-center">
-              <Link
-                className="bg-slate-800 text-white font-montserrat py-2 px-8 font-medium rounded-xl hover:bg-slate-500 transition-all duration-300"
-                to={`/edit-post/${id}`}
-              >
-                <h2>Editer l&apos;article</h2>
-              </Link>
-              <button
-                onClick={handleDelete}
-                className="bg-red-600 text-white font-montserrat py-2 px-8 font-medium rounded-xl hover:bg-red-400 transition-all duration-300"
-              >
-                Supprimer
-              </button>
-            </div>
+            {user && (
+              <div className="flex flex-row gap-4 justify-center">
+                <Link
+                  className="bg-slate-800 text-white font-montserrat py-2 px-8 font-medium rounded-xl hover:bg-slate-500 transition-all duration-300"
+                  to={`/edit-post/${id}`}
+                >
+                  <h2>Editer l&apos;article</h2>
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-600 text-white font-montserrat py-2 px-8 font-medium rounded-xl hover:bg-red-400 transition-all duration-300"
+                >
+                  Supprimer
+                </button>
+              </div>
+            )}
           </div>
           {comments.length && (
             <>
@@ -88,7 +93,7 @@ function ShowPost() {
         </div>
       )}
     </>
-  );
+  )
 }
 
-export default ShowPost;
+export default ShowPost

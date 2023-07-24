@@ -4,6 +4,10 @@ export const getAll = () => {
   return db.query("select * from user")
 }
 
+export const findOneByEmail = (email) => {
+  return db.query("select * from user where email = ?", [email])
+}
+
 export const getOne = (id) => {
   return db.query("select * from user where id = ?", [id])
 }
