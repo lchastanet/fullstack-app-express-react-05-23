@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 
-import AppRoutes from "./routes/appRoutes"
+import AppRoutes from "./routes/AppRoutes"
 import { ThemeProvider } from "./contexts/ThemeContext"
 import { CurrentUserContextProvider } from "./contexts/CurrentUserContext"
 
