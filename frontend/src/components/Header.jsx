@@ -1,7 +1,18 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import ToggleThemeButton from "./ToggleThemeButton"
+import { useCurrentUserContext } from "../contexts/CurrentUserContext"
 
 function Header() {
+  const { user, setUser } = useCurrentUserContext()
+
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    localStorage.clear()
+    setUser(null)
+    navigate("/")
+  }
+
   return (
     <header>
       <nav className="flex flex-row justify-around shadow bg-white dark:bg-slate-800 dark:text-white">
@@ -13,26 +24,20 @@ function Header() {
           <li className="hover:border-b-4 hover:border-slate-800 hover:font-bold transition-all duration-300 flex flex-col justify-center">
             <Link to="/">Accueil</Link>
           </li>
-          <li className="hover:border-b-4 hover:border-slate-800 hover:font-bold transition-all duration-300 flex flex-col justify-center">
-            <Link to="/create-post">Créer un post</Link>
-          </li>
-          <li>
-            <button
-              type="button"
-              className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              id="user-menu-button"
-              aria-expanded="false"
-              data-dropdown-toggle="user-dropdown"
-              data-dropdown-placement="bottom"
-            >
-              <span className="sr-only">Open user menu</span>
-              <img
-                className="w-8 h-8 rounded-full"
-                src="http://picsum.photos/200/300"
-                alt="user photo"
-              />
-            </button>
-          </li>
+          {user ? (
+            <>
+              <li className="hover:border-b-4 hover:border-slate-800 hover:font-bold transition-all duration-300">
+                <Link to="/create-post">Créer un post</Link>
+              </li>
+              <li className="hover:border-b-4 hover:border-slate-800 hover:font-bold transition-all duration-300">
+                <button onClick={handleClick}>Déconnexion</button>
+              </li>
+            </>
+          ) : (
+            <li className="hover:border-b-4 hover:border-slate-800 hover:font-bold transition-all duration-300">
+              <Link to="/sign-in">Se connecter</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

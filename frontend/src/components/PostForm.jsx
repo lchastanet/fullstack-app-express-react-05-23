@@ -1,31 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"
+import { useCurrentUserContext } from "../contexts/CurrentUserContext"
 
 function PostForm({ modCreate }) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
 
-  const { id } = useParams();
+  const { id } = useParams()
 
-  const navigate = useNavigate();
+  const { user } = useCurrentUserContext()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!modCreate) {
       fetch(`${import.meta.env.VITE_BACKEND_URL}/post/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          setTitle(data.title);
-          setContent(data.content);
-        });
+          setTitle(data.title)
+          setContent(data.content)
+        })
     }
-  }, [id, modCreate]);
+  }, [id, modCreate])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (title.length > 3 && content.length > 10) {
-      const data = { title, content };
+      const user_id = user.id
+      const data = { title, content, user_id }
 
       fetch(
         `${import.meta.env.VITE_BACKEND_URL}/post${modCreate ? "" : "/" + id}`,
@@ -36,19 +40,19 @@ function PostForm({ modCreate }) {
         }
       ).then((res) => {
         if (res.status === 201) {
-          return navigate("/");
+          return navigate("/")
         }
 
         if (res.status === 200) {
-          return navigate(`/show-post/${id}`);
+          return navigate(`/show-post/${id}`)
         }
 
-        alert("Bad Request");
-      });
+        alert("Bad Request")
+      })
     } else {
-      alert("Fields canno't be null");
+      alert("Fields canno't be null")
     }
-  };
+  }
 
   return (
     <>
@@ -82,7 +86,7 @@ function PostForm({ modCreate }) {
         />
       </form>
     </>
-  );
+  )
 }
 
-export default PostForm;
+export default PostForm

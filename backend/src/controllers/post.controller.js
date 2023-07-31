@@ -19,8 +19,6 @@ export const browse = async (req, res) => {
 }
 
 export const findOneWithComments = async (req, res) => {
-  console.log(req.query)
-
   try {
     const { id } = req.params
 
@@ -58,6 +56,7 @@ export const findOne = async (req, res) => {
 export const addOne = async (req, res) => {
   try {
     const post = req.body
+    console.log(post)
 
     const [result] = await createOne(post)
 

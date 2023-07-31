@@ -11,11 +11,11 @@ export const getOne = (id) => {
   )
 }
 
-export const createOne = ({ title, content }) => {
-  return db.query("insert into post (title, content) values (?, ?)", [
-    title,
-    content,
-  ])
+export const createOne = ({ title, content, user_id }) => {
+  return db.query(
+    "insert into post (title, content, user_id) values (?, ?, ?)",
+    [title, content, user_id]
+  )
 }
 
 export const editOne = ({ id, title, content }) => {
