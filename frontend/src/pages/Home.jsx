@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import PostCard from "../components/PostCard";
-import { Link } from "react-router-dom";
+import PostCard from "../components/PostCard"
+import { Link } from "react-router-dom"
 
 function Home() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([])
 
   useEffect(() => {
     fetch("http://localhost:8000/post")
       .then((res) => res.json())
-      .then((data) => setPosts(data));
-  }, []);
+      .then((data) => setPosts(data))
+  }, [])
 
   return (
     <>
-      <div className="flex flex-row justify-center gap-8 bg-white my-12 dark:text- white dark:bg-slate-800">
+      <div className="flex flex-row justify-center gap-8 bg-white my-12 dark:text-white dark:bg-slate-800">
         <div className="flex flex-col my-auto gap-4">
           <h2 className="text-2xl">
             Bienvenue sur &nbsp;
@@ -48,7 +48,7 @@ function Home() {
           posts.map((post) => <PostCard key={post.id} post={post} />)}
       </article>
     </>
-  );
+  )
 }
 
-export default Home;
+export default Home
