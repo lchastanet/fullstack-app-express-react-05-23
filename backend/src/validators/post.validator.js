@@ -1,4 +1,5 @@
 import { checkSchema } from "express-validator"
+// import { getOne } from "../models/user.model.js"
 
 export const postSchema = checkSchema({
   content: {
@@ -41,5 +42,12 @@ export const postSchema = checkSchema({
     isNumeric: {
       errorMessage: "Votre identifiant doit être de type number",
     },
+    // custom: {
+    //   options: async (value) => {
+    //     const [user] = await getOne(value)
+
+    //     if (!user.length) throw new Error("User not found !")
+    //   },
+    // },
   },
 })
