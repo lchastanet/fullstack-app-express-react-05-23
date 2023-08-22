@@ -35,7 +35,7 @@ function SignUp() {
         body: JSON.stringify(fields),
       })
         .then((res) => {
-          if (res.status) {
+          if (res.status === 201) {
             return res
           } else {
             alert("Une erreur est survenue")
@@ -43,10 +43,9 @@ function SignUp() {
         })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
-          // setUser(data)
-          // localStorage.setItem("user", JSON.stringify(data))
-          // navigate("/")
+          setUser(data)
+          localStorage.setItem("user", JSON.stringify(data))
+          navigate("/")
         })
     } else {
       alert("Veuillez remplir les champs correctement")
