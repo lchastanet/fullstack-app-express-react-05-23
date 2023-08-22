@@ -2,8 +2,13 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useCurrentUserContext } from "../contexts/CurrentUserContext"
 
-function SignIn() {
-  const [fields, setFields] = useState({ email: "", password: "" })
+function SignUp() {
+  const [fields, setFields] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  })
 
   const { setUser } = useCurrentUserContext()
 
@@ -16,8 +21,13 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (fields.email.length && fields.password.length) {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-in`, {
+    if (
+      fields.email.length &&
+      fields.password.length &&
+      fields.lastName.length &&
+      fields.firstName.length
+    ) {
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,18 +35,18 @@ function SignIn() {
         body: JSON.stringify(fields),
       })
         .then((res) => {
-          if (res.status === 200) {
-            console.log(res)
+          if (res.status) {
             return res
           } else {
-            alert("Identifiants incorrects")
+            alert("Une erreur est survenue")
           }
         })
         .then((res) => res.json())
         .then((data) => {
-          setUser(data)
-          localStorage.setItem("user", JSON.stringify(data))
-          navigate("/")
+          console.log(data)
+          // setUser(data)
+          // localStorage.setItem("user", JSON.stringify(data))
+          // navigate("/")
         })
     } else {
       alert("Veuillez remplir les champs correctement")
@@ -48,7 +58,7 @@ function SignIn() {
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Connexion
+            Inscription
           </h1>
           <form
             onSubmit={handleSubmit}
@@ -75,6 +85,42 @@ function SignIn() {
             </div>
             <div>
               <label
+                htmlFor="firstName"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                FirstName
+              </label>
+              <input
+                value={fields.firstName}
+                onChange={handleChange}
+                type="text"
+                name="firstName"
+                id="firstName"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="toto"
+                required=""
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                LastName
+              </label>
+              <input
+                value={fields.lastName}
+                onChange={handleChange}
+                type="text"
+                name="lastName"
+                id="lastName"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="toto"
+                required=""
+              />
+            </div>
+            <div>
+              <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
@@ -95,15 +141,15 @@ function SignIn() {
               type="submit"
               className="w-full text-white bg-slate-600 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-primary-800"
             >
-              Se connecter
+              S&apos;inscrire
             </button>
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-              Pas de compte?{" "}
+              Déjà un compte ?{" "}
               <Link
-                to="/sign-up"
+                to="/sign-in"
                 className="font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
-                S&apos;inscrire
+                Se connecter
               </Link>
             </p>
           </form>
@@ -113,4 +159,4 @@ function SignIn() {
   )
 }
 
-export default SignIn
+export default SignUp

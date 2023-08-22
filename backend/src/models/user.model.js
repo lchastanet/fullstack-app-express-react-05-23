@@ -12,11 +12,11 @@ export const getOne = (id) => {
   return db.query("select * from user where id = ?", [id])
 }
 
-export const createOne = ({ firstname, lastname }) => {
-  return db.query("insert into user (firstname, lastname) values (?, ?)", [
-    firstname,
-    lastname,
-  ])
+export const createOne = ({ firstName, lastName, email, password }) => {
+  return db.query(
+    "insert into user (firstname, lastname, email, password) values (?, ?, ?, ?)",
+    [firstName, lastName, email, password]
+  )
 }
 
 export const editOne = ({ id, firstname, lastname }) => {
