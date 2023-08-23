@@ -1,17 +1,12 @@
 import { hash } from "../helpers/hashingHelper.js"
+import asyncWrapper from "../utils/asyncWrapper.js"
 
-const hashPassword = async (req, res, next) => {
-  try {
-    const hashedPassword = await hash(req.body.password)
+const hashPassword = asyncWrapper(async (req, res, next) => {
+  const hashedPassword = await hash(req.body.password)
 
-    req.body.password = hashedPassword
+  req.body.password = hashedPassword
 
-    next()
-  } catch (e) {
-    console.log(e)
-
-    res.sendStatus(500)
-  }
-}
+  next()
+})
 
 export default hashPassword

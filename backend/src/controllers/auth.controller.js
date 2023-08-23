@@ -1,3 +1,4 @@
+import asyncWrapper from "../utils/asyncWrapper.js"
 import { findOneByEmail, createOne } from "../models/user.model.js"
 
 export const signIn = async (req, res) => {
@@ -10,19 +11,14 @@ export const signIn = async (req, res) => {
   }
 }
 
-export const signUp = async (req, res) => {
-  try {
-    const [result] = await createOne(req.body)
+export const signUp = asyncWrapper(async (req, res, next) => {
+  const [result] = await createOne(req.body)
 
-    delete req.body.password
+  delete req.body.password
 
-    if (result.affectedRows) {
-      res.status(201).json({ id: result.insertId, ...req.body })
-    } else {
-      res.sendStatus(500)
-    }
-  } catch (e) {
-    console.error(e)
+  if (result.affectedRows) {
+    res.status(201).json({ id: result.insertId, ...req.body })
+  } else {
     res.sendStatus(500)
   }
-}
+})

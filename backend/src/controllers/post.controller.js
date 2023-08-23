@@ -6,6 +6,7 @@ import {
   editOne,
   deleteOne,
 } from "../models/post.model.js"
+import asyncWrapper from "../utils/asyncWrapper.js"
 
 export const browse = async (req, res) => {
   try {
@@ -53,41 +54,30 @@ export const findOne = async (req, res) => {
   }
 }
 
-export const addOne = async (req, res) => {
-  try {
-    const post = req.body
-    console.log(post)
+export const addOne = asyncWrapper(async (req, res) => {
+  const post = req.body
 
-    const [result] = await createOne(post)
+  const [result] = await createOne(post)
 
-    if (result.affectedRows) {
-      res.status(201).json({ id: result.insertId, ...post })
-    } else {
-      res.sendStatus(400)
-    }
-  } catch (e) {
-    console.error(e)
-    res.status(500).json({ msg: "Erreur" })
+  if (result.affectedRows) {
+    res.status(201).json({ id: result.insertId, ...post })
+  } else {
+    res.sendStatus(400)
   }
-}
+})
 
-export const modifyOne = async (req, res) => {
-  try {
-    const post = req.body
-    const { id } = req.params
+export const modifyOne = asyncWrapper(async (req, res) => {
+  const post = req.body
+  const { id } = req.params
 
-    const [result] = await editOne({ id, ...post })
+  const [result] = await editOne({ id, ...post })
 
-    if (result.affectedRows) {
-      res.json({ id, ...post })
-    } else {
-      res.sendStatus(400)
-    }
-  } catch (e) {
-    console.error(e)
-    res.status(500).json({ msg: "Erreur" })
+  if (result.affectedRows) {
+    res.json({ id, ...post })
+  } else {
+    res.sendStatus(400)
   }
-}
+})
 
 export const removeOne = async (req, res) => {
   try {

@@ -14,7 +14,7 @@ export const userSchema = checkSchema({
   },
   password: {
     exists: {
-      errorMessage: "Un email est requis",
+      errorMessage: "Un mot de passe sécurisé est requis",
       options: {
         checkFalsy: true,
       },
