@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import ToggleThemeButton from "./ToggleThemeButton"
 import { useCurrentUserContext } from "../contexts/CurrentUserContext"
+import expressAPI from "../services/expressAPI"
 
 function Header() {
   const { user, setUser } = useCurrentUserContext()
@@ -8,9 +9,15 @@ function Header() {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    localStorage.clear()
-    setUser(null)
-    navigate("/")
+    expressAPI.get("/auth/logout").then((res) => {
+      if (res.status === 200) {
+        localStorage.clear()
+        setUser(null)
+        navigate("/")
+      } else {
+        alert("Impossible de se déconnecter")
+      }
+    })
   }
 
   return (

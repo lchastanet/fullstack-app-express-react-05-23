@@ -1,11 +1,13 @@
 import UnauthorizedError from "../errors/UnauthorizedError.js"
-import { getOne } from "../models/user.model.js"
+import { findOneByEmail } from "../models/user.model.js"
 import asyncWrapper from "../utils/asyncWrapper.js"
 
 const checkUserExists = asyncWrapper(async (req, res, next) => {
-  const [user] = await getOne(req.body.user_id)
+  const [user] = await findOneByEmail(req.body.email)
 
   if (!user.length) throw new UnauthorizedError()
+
+  req.user = user[0]
 
   return next()
 })

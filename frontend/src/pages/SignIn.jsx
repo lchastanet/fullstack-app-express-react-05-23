@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useCurrentUserContext } from "../contexts/CurrentUserContext"
+import expressAPI from "../services/expressAPI"
 
 function SignIn() {
   const [fields, setFields] = useState({ email: "", password: "" })
@@ -17,13 +18,8 @@ function SignIn() {
     e.preventDefault()
 
     if (fields.email.length && fields.password.length) {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-in`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(fields),
-      })
+      expressAPI
+        .post("/auth/sign-in", fields)
         .then((res) => {
           if (res.status === 200) {
             console.log(res)
@@ -32,7 +28,6 @@ function SignIn() {
             alert("Identifiants incorrects")
           }
         })
-        .then((res) => res.json())
         .then((data) => {
           setUser(data)
           localStorage.setItem("user", JSON.stringify(data))

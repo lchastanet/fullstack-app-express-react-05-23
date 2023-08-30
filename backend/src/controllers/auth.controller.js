@@ -1,15 +1,22 @@
 import asyncWrapper from "../utils/asyncWrapper.js"
-import { findOneByEmail, createOne } from "../models/user.model.js"
+import { createOne } from "../models/user.model.js"
+import { verify } from "../helpers/hashingHelper.js"
+import { encodeJWT } from "../helpers/jwtHelper.js"
+import UnauthorizedError from "../errors/UnauthorizedError.js"
 
-export const signIn = async (req, res) => {
-  const [user] = await findOneByEmail(req.body.email)
+export const signIn = asyncWrapper(async (req, res) => {
+  const passwordVerif = await verify(req.user.password, req.body.password)
 
-  if (user.length) {
-    res.status(200).json(user[0])
-  } else {
-    res.sendStatus(404)
-  }
-}
+  if (!passwordVerif) throw new UnauthorizedError()
+
+  delete req.user.password
+
+  const token = encodeJWT(req.user)
+
+  res.cookie("auth_token", token, { httpOnly: true, secure: false })
+
+  res.status(200).json(req.user)
+})
 
 export const signUp = asyncWrapper(async (req, res, next) => {
   const [result] = await createOne(req.body)
@@ -22,3 +29,7 @@ export const signUp = asyncWrapper(async (req, res, next) => {
     res.sendStatus(500)
   }
 })
+
+export const logout = (req, res) => {
+  res.clearCookie("auth_token").sendStatus(200)
+}

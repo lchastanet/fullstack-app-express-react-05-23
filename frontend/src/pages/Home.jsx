@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import expressAPI from "../services/expressAPI"
 
 import PostCard from "../components/PostCard"
 import { Link } from "react-router-dom"
+import { useCurrentUserContext } from "../contexts/CurrentUserContext"
 
 function Home() {
   const [posts, setPosts] = useState([])
+  const { user } = useCurrentUserContext()
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/post`)
-      .then((res) => setPosts(res.data))
+    expressAPI.get(`/post`).then((res) => setPosts(res.data))
   }, [])
 
   return (
@@ -45,7 +45,8 @@ function Home() {
         <h1 className="text-3xl text-center text-white">Liste des posts</h1>
       </div>
       <article className="flex flex-col flex-wrap w-4/5 xl:w-2/4 mx-auto my-12 gap-y-4">
-        {posts.length > 0 &&
+        {user &&
+          posts.length > 0 &&
           posts.map((post) => <PostCard key={post.id} post={post} />)}
       </article>
     </>
