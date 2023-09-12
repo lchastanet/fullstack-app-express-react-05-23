@@ -3,6 +3,7 @@ import { createOne } from "../models/user.model.js"
 import { verify } from "../helpers/hashingHelper.js"
 import { encodeJWT } from "../helpers/jwtHelper.js"
 import UnauthorizedError from "../errors/UnauthorizedError.js"
+import { generateToken } from "../helpers/csrfHelper.js"
 
 export const signIn = asyncWrapper(async (req, res) => {
   const passwordVerif = await verify(req.user.password, req.body.password)
@@ -32,4 +33,10 @@ export const signUp = asyncWrapper(async (req, res, next) => {
 
 export const logout = (req, res) => {
   res.clearCookie("auth_token").sendStatus(200)
+}
+
+export const getCsrfToken = (req, res) => {
+  const csrfToken = generateToken(req, res)
+
+  res.json({ csrfToken })
 }

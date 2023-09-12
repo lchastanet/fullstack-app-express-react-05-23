@@ -8,6 +8,8 @@ import commentsRoutes from "./routes/comment.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import errorHandler from "./middlewares/errorHandler.js"
 import authorization from "./middlewares/authorization.js"
+import { doubleCsrfProtection } from "./helpers/csrfHelper.js"
+import { getCsrfToken } from "./controllers/auth.controller.js"
 
 const app = express()
 
@@ -21,7 +23,9 @@ app.use(
 
 app.use(cookieParser())
 app.use(express.json())
+app.use(doubleCsrfProtection)
 
+//app.get("/csrf-token", getCsrfToken)
 app.use("/post", authorization, postsRoutes)
 app.use("/user", usersRoutes)
 app.use("/comment", commentsRoutes)

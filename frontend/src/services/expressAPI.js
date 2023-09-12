@@ -5,4 +5,13 @@ const instance = axios.create({
   withCredentials: true,
 })
 
+export const getCSRFToken = async () => {
+  const { data } = await instance.get("/csrf-token")
+
+  instance.defaults.headers = {
+    ...instance.defaults.headers,
+    "X-Csrf-Token": data.csrfToken,
+  }
+}
+
 export default instance

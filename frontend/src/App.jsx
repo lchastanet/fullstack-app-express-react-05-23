@@ -6,8 +6,14 @@ import Footer from "./components/Footer"
 import AppRoutes from "./routes/AppRoutes"
 import { ThemeProvider } from "./contexts/ThemeContext"
 import { CurrentUserContextProvider } from "./contexts/CurrentUserContext"
+import { useEffect } from "react"
+import { getCSRFToken } from "./services/expressAPI"
 
 function App() {
+  useEffect(() => {
+    getCSRFToken()
+  }, [])
+
   return (
     <BrowserRouter>
       <ThemeProvider>
