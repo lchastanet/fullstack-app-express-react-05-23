@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useCurrentUserContext } from "../contexts/CurrentUserContext"
+import expressAPI from "../services/expressAPI.js"
 
 function SignUp() {
   const [fields, setFields] = useState({
@@ -27,24 +28,20 @@ function SignUp() {
       fields.lastName.length &&
       fields.firstName.length
     ) {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(fields),
-      })
+      expressAPI
+        .post(`/auth/sign-up`, fields)
         .then((res) => {
+          console.log(res)
           if (res.status === 201) {
             return res
           } else {
             alert("Une erreur est survenue")
           }
         })
-        .then((res) => res.json())
         .then((data) => {
-          setUser(data)
-          localStorage.setItem("user", JSON.stringify(data))
+          const user = { ...data, roles: JSON.parse(data.roles) }
+          setUser(user)
+          localStorage.setItem("user", JSON.stringify(user))
           navigate("/")
         })
     } else {

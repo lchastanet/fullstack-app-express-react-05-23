@@ -1,7 +1,7 @@
 import db from "./db.js"
 
 export const getAll = () => {
-  return db.query("select * from user")
+  return db.query("select id, lastname, firstname, email, roles from user")
 }
 
 export const findOneByEmail = (email) => {

@@ -10,6 +10,7 @@ import errorHandler from "./middlewares/errorHandler.js"
 import authorization from "./middlewares/authorization.js"
 import { doubleCsrfProtection } from "./helpers/csrfHelper.js"
 import { getCsrfToken } from "./controllers/auth.controller.js"
+import { checkRoles } from "./middlewares/checkRoles.js"
 
 const app = express()
 
@@ -25,9 +26,9 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(doubleCsrfProtection)
 
-//app.get("/csrf-token", getCsrfToken)
+app.get("/csrf-token", getCsrfToken)
 app.use("/post", authorization, postsRoutes)
-app.use("/user", usersRoutes)
+app.use("/user", authorization, checkRoles("admin"), usersRoutes)
 app.use("/comment", commentsRoutes)
 app.use("/auth", authRoutes)
 app.use(errorHandler)

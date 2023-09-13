@@ -28,9 +28,9 @@ function SignIn() {
             alert("Identifiants incorrects")
           }
         })
-        .then((data) => {
-          setUser(data)
-          localStorage.setItem("user", JSON.stringify(data))
+        .then((res) => {
+          setUser(res.data)
+          localStorage.setItem("user", JSON.stringify(res.data))
           navigate("/")
         })
     } else {
